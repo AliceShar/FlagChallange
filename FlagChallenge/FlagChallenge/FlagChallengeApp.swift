@@ -11,7 +11,7 @@ import SwiftUI
 struct FlagChallengeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StartView()
         }
     }
 }
