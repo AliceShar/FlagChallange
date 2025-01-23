@@ -16,19 +16,27 @@ final class ChallengeViewModel: ObservableObject {
     @Published private(set) var questionCountries: [CountryModel?] = []
     @Published private(set) var result: [CountryModel?] = []
     @Published private(set) var resultText: String?
+    @Published private(set) var disabledView: Bool = false
+    
+    @Published private(set) var correctAnswers: Int = 0
+    @Published private(set) var wrongAnswers: Int = 0
     
     // Stored properties
     private let countriesManager: CountriesHelper
-    
     private var historyArray: [CountryModel] = []
-    @Published private(set) var correctAnswers: Int = 0
-    @Published private(set) var wrongAnswers: Int = 0
+    private var correctAnswersHistory: Int = 0
+    private var wrongAnswersHistory: Int = 0
     
     init(countriesManager: CountriesHelper) {
         self.countriesManager = countriesManager
     }
     
     func getQuestion() {
+        guard historyArray.count != 5 else {
+            showScoreAndGoBack()
+            return
+        }
+        questionCountries = []
         let countriesList = countriesManager.retrieveCountriesList()
         let availableCountries = countriesList.filter { !historyArray.contains($0) }
         
@@ -49,7 +57,14 @@ final class ChallengeViewModel: ObservableObject {
         questionCountries.append(contentsOf: [correctCountry, wrongCountry])
     }
     
+    private func showScoreAndGoBack() {
+        correctAnswers = correctAnswersHistory
+        wrongAnswers = wrongAnswersHistory
+        clearAll()
+    }
+    
     func getAnswer(_ id: String) {
+        disabledView = true
         if id == correctCountry?.id {
             getResultText(true)
         } else {
@@ -60,12 +75,17 @@ final class ChallengeViewModel: ObservableObject {
     private func getResultText(_ correct: Bool) {
         if correct {
             resultText = "Success. Well done!"
-            correctAnswers += 1
+            correctAnswersHistory += 1
         } else {
             resultText = "It's wrong. You can do better!"
-            wrongAnswers += 1
+            wrongAnswersHistory += 1
         }
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.resultText = nil
+            self?.disabledView = false
+            self?.getQuestion()
+        }
     }
     
     func clearAll() {
@@ -74,7 +94,14 @@ final class ChallengeViewModel: ObservableObject {
         questionCountries = []
         historyArray = []
         resultText = nil
-        correctAnswers = 0
-        wrongAnswers = 0
+        correctAnswersHistory = 0
+        wrongAnswersHistory = 0
+    }
+    
+    
+    func onAppear() {
+        disabledView = false
+        clearAll()
+        getQuestion()
     }
 }

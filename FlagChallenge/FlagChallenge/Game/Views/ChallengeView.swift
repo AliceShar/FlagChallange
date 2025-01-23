@@ -18,6 +18,7 @@ struct ChallengeView: View {
             
             getQuestionView()
         }
+        .allowsHitTesting(!challengeVM.disabledView)
         .overlay(alignment: .top) {
             if let resultText = challengeVM.resultText {
                 Text(resultText)
@@ -27,7 +28,7 @@ struct ChallengeView: View {
             }
         }
         .onAppear {
-            challengeVM.getQuestion()
+            challengeVM.onAppear()
         }
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(.hidden, for: .navigationBar)

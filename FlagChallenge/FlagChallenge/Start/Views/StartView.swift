@@ -26,6 +26,24 @@ struct StartView: View {
                         .font(.title)
                         .foregroundStyle(Color.primaryColor)
                         .multilineTextAlignment(.center)
+                        .padding(.bottom, 20)
+                    
+                    if challengeVM.correctAnswers != 0 || challengeVM.wrongAnswers != 0 {
+                        Text("Last game results:")
+                            .font(.title2)
+                            .foregroundStyle(Color.primaryColor)
+                            .multilineTextAlignment(.center)
+                        
+                        Text("Correct: \(challengeVM.correctAnswers)")
+                            .font(.headline)
+                            .foregroundStyle(Color.greenColor)
+                            .multilineTextAlignment(.center)
+                        
+                        Text("Wrong: \(challengeVM.wrongAnswers)")
+                            .font(.headline)
+                            .foregroundStyle(Color.destructiveColor)
+                            .multilineTextAlignment(.center)
+                    }
                     
                     Spacer().frame(height: 100)
                     
