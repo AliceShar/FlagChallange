@@ -22,13 +22,17 @@ struct ChallengeView: View {
         .overlay(alignment: .top) {
             if let resultText = challengeVM.resultText {
                 Text(resultText)
-                    .font(.title)
-                    .foregroundStyle(Color.primaryColor)
+                    .withDefaultTextFormatting(textSixe: .title, isBold: false)
                     .multilineTextAlignment(.center)
             }
         }
         .onAppear {
             challengeVM.onAppear()
+        }
+        .onReceive(challengeVM.$goBack) { bool in
+            if bool {
+                router.navigateToRoot()
+            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(.hidden, for: .navigationBar)

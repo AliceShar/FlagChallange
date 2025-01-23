@@ -23,8 +23,7 @@ struct StartView: View {
                 
                 VStack {
                     Text("Welcome! \nYou got into the game of countries and flags. Press the button to start the challenge")
-                        .font(.title)
-                        .foregroundStyle(Color.primaryColor)
+                        .withDefaultTextFormatting(textSixe: .title, isBold: false)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 20)
                     
@@ -54,22 +53,22 @@ private extension StartView {
         })
     }
     
-    @ViewBuilder func scoreView() -> some View {
+    @ViewBuilder private func scoreView() -> some View {
         if challengeVM.correctAnswers != 0 || challengeVM.wrongAnswers != 0 {
             Text("Last game results:")
-                .font(.title2)
-                .foregroundStyle(Color.primaryColor)
+                .withDefaultTextFormatting(textSixe: .title2, isBold: true)
                 .multilineTextAlignment(.center)
+                .padding(.bottom)
             
-            Text("Correct: \(challengeVM.correctAnswers)")
-                .font(.headline)
-                .foregroundStyle(Color.greenColor)
-                .multilineTextAlignment(.center)
-            
-            Text("Wrong: \(challengeVM.wrongAnswers)")
-                .font(.headline)
-                .foregroundStyle(Color.destructiveColor)
-                .multilineTextAlignment(.center)
+            Group {
+                Text("Correct: \(challengeVM.correctAnswers)")
+                    .foregroundStyle(Color.greenColor)
+                
+                Text("Wrong: \(challengeVM.wrongAnswers)")
+                    .foregroundStyle(Color.destructiveColor)
+            }
+            .font(.title2)
+            .multilineTextAlignment(.center)
         }
     }
 }

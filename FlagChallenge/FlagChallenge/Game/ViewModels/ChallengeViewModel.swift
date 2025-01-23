@@ -20,6 +20,7 @@ final class ChallengeViewModel: ObservableObject {
     
     @Published private(set) var correctAnswers: Int = 0
     @Published private(set) var wrongAnswers: Int = 0
+    @Published private(set) var goBack: Bool = false
     
     // Stored properties
     private let countriesManager: CountriesHelper
@@ -31,7 +32,34 @@ final class ChallengeViewModel: ObservableObject {
         self.countriesManager = countriesManager
     }
     
-    func getQuestion() {
+    // Public methods
+    func clearAll() {
+        wrongCountry = nil
+        correctCountry = nil
+        shuffledQuestionCountries = []
+        historyArray = []
+        resultText = nil
+        correctAnswersHistory = 0
+        wrongAnswersHistory = 0
+    }
+    
+    func onAppear() {
+        disabledView = false
+        clearAll()
+        getQuestion()
+    }
+    
+    func getAnswer(_ id: String) {
+        disabledView = true
+        if id == correctCountry?.id {
+            getResultText(true)
+        } else {
+            getResultText(false)
+        }
+    }
+    
+    // Private methods
+    private func getQuestion() {
         guard historyArray.count != 5 else {
             showScoreAndGoBack()
             return
@@ -62,15 +90,8 @@ final class ChallengeViewModel: ObservableObject {
         correctAnswers = correctAnswersHistory
         wrongAnswers = wrongAnswersHistory
         clearAll()
-    }
-    
-    func getAnswer(_ id: String) {
-        disabledView = true
-        if id == correctCountry?.id {
-            getResultText(true)
-        } else {
-            getResultText(false)
-        }
+        goBack = true
+        goBack = false
     }
     
     private func getResultText(_ correct: Bool) {
@@ -82,27 +103,10 @@ final class ChallengeViewModel: ObservableObject {
             wrongAnswersHistory += 1
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.resultText = nil
             self?.disabledView = false
             self?.getQuestion()
         }
-    }
-    
-    func clearAll() {
-        wrongCountry = nil
-        correctCountry = nil
-        shuffledQuestionCountries = []
-        historyArray = []
-        resultText = nil
-        correctAnswersHistory = 0
-        wrongAnswersHistory = 0
-    }
-    
-    
-    func onAppear() {
-        disabledView = false
-        clearAll()
-        getQuestion()
     }
 }
