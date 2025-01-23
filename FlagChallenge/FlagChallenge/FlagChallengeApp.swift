@@ -11,10 +11,11 @@ import SwiftUI
 struct FlagChallengeApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    let countriesManager: CountriesHelper = CountriesHelper()
     
     var body: some Scene {
         WindowGroup {
-            StartView()
+            StartView(countriesManager: countriesManager)
         }
     }
 }

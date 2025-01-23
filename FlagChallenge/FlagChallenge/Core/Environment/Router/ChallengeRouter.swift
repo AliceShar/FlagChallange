@@ -12,7 +12,7 @@ final class ChallengeRouter: ObservableObject, NavigationProtocol {
     
     @Published var navPath = NavigationPath()
     
-    func navigate(to destination: DetailsDestination) {
+    func navigate(to destination: ChallengeDestination) {
         navPath.append(destination)
     }
     
@@ -24,14 +24,14 @@ final class ChallengeRouter: ObservableObject, NavigationProtocol {
         navPath.removeLast(navPath.count)
     }
     
-//    @ViewBuilder func navigateBetweenViews (value: ProfileDestination) -> some View {
-//        switch value {
-//        case .details:
-//            break
-//        }
-//    }
+    @ViewBuilder func navigateBetweenViews (value: ChallengeDestination) -> some View {
+        switch value {
+        case .challenge:
+            ChallengeView()
+        }
+    }
 }
 
-public enum DetailsDestination: Codable, Hashable {
-    case game
+public enum ChallengeDestination: Codable, Hashable {
+    case challenge
 }

@@ -9,7 +9,7 @@ import Foundation
 
 final class CountriesHelper {
 
-    private let countriesList: [CountryModel] = []
+    private var countriesList: [CountryModel] = []
     
     func retrieveCountriesList() -> [CountryModel]? {
         return countriesList
@@ -36,6 +36,7 @@ final class CountriesHelper {
             CountryModel(name: "Jamaica", flag: "🇯🇲"),
             CountryModel(name: "Austria", flag: "🇦🇹")
         ]
+        countriesList = predefinedCountries
     }
 
 }
