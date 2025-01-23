@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct ChallengeButton: View {
+    let title: String
+    var action: () -> Void
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            action()
+        } label: {
+            Text(title)
+                .foregroundColor(Color.primaryColor)
+                .frame(maxWidth: .infinity)
+                .font(.title2)
+                .bold()
+                .multilineTextAlignment(.center)
+        }
     }
 }
 
 #Preview {
-    ChallengeButton()
+    ChallengeButton(title: "Title", action: {})
 }

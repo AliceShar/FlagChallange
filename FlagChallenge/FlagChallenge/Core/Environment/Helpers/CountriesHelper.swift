@@ -11,7 +11,7 @@ final class CountriesHelper {
 
     private var countriesList: [CountryModel] = []
     
-    func retrieveCountriesList() -> [CountryModel]? {
+    func retrieveCountriesList() -> [CountryModel] {
         return countriesList
     }
     

@@ -18,6 +18,14 @@ struct ChallengeView: View {
             
             getQuestionView()
         }
+        .overlay(alignment: .top) {
+            if let resultText = challengeVM.resultText {
+                Text(resultText)
+                    .font(.title)
+                    .foregroundStyle(Color.primaryColor)
+                    .multilineTextAlignment(.center)
+            }
+        }
         .onAppear {
             challengeVM.getQuestion()
         }
@@ -27,6 +35,7 @@ struct ChallengeView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 BackButton {
                     router.navigateToRoot()
+                    challengeVM.clearAll()
                 }
             }
         }
@@ -36,10 +45,24 @@ struct ChallengeView: View {
 private extension ChallengeView {
     
     @ViewBuilder func getQuestionView() -> some View {
-        HStack(alignment: .center) {
-            Text("What country is this flag?")
+        VStack(alignment: .center) {
+            Group {
+                Text("What country is this flag?")
+                    .bold()
+                    .foregroundStyle(Color.backgroundModalColor)
+                
+                Text(challengeVM.correctCountry?.flag ?? "")
+            }
+            .font(.title)
             
-            Text(<#T##attributedContent: AttributedString##AttributedString#>)
+            Spacer().frame(height: 40)
+            
+            ForEach(challengeVM.questionCountries.indices, id: \.self) { index in
+                ChallengeButton(title: challengeVM.questionCountries[index]?.name ?? "") {
+                    challengeVM.getAnswer(challengeVM.questionCountries[index]?.id ?? "")
+                }
+                .padding()
+            }
         }
     }
 }
