@@ -58,9 +58,9 @@ private extension ChallengeView {
             
             Spacer().frame(height: 40)
             
-            ForEach(challengeVM.questionCountries.indices, id: \.self) { index in
-                ChallengeButton(title: challengeVM.questionCountries[index]?.name ?? "") {
-                    challengeVM.getAnswer(challengeVM.questionCountries[index]?.id ?? "")
+            ForEach(challengeVM.shuffledQuestionCountries.indices, id: \.self) { index in
+                ChallengeButton(title: challengeVM.shuffledQuestionCountries[index]?.name ?? "") {
+                    challengeVM.getAnswer(challengeVM.shuffledQuestionCountries[index]?.id ?? "")
                 }
                 .padding()
             }

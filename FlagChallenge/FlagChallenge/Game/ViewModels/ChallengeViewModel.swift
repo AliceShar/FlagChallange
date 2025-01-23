@@ -13,7 +13,7 @@ final class ChallengeViewModel: ObservableObject {
     // Published properties
     @Published private(set) var wrongCountry: CountryModel?
     @Published private(set) var correctCountry: CountryModel?
-    @Published private(set) var questionCountries: [CountryModel?] = []
+    @Published private(set) var shuffledQuestionCountries: [CountryModel?] = []
     @Published private(set) var result: [CountryModel?] = []
     @Published private(set) var resultText: String?
     @Published private(set) var disabledView: Bool = false
@@ -36,7 +36,7 @@ final class ChallengeViewModel: ObservableObject {
             showScoreAndGoBack()
             return
         }
-        questionCountries = []
+        shuffledQuestionCountries = []
         let countriesList = countriesManager.retrieveCountriesList()
         let availableCountries = countriesList.filter { !historyArray.contains($0) }
         
@@ -54,7 +54,8 @@ final class ChallengeViewModel: ObservableObject {
         } while wrongCountryCandidate == correctCountry
         wrongCountry = wrongCountryCandidate
         
-        questionCountries.append(contentsOf: [correctCountry, wrongCountry])
+        let questionCountries = [correctCountry, wrongCountry].compactMap { $0 }
+        shuffledQuestionCountries = questionCountries.shuffled()
     }
     
     private func showScoreAndGoBack() {
@@ -91,7 +92,7 @@ final class ChallengeViewModel: ObservableObject {
     func clearAll() {
         wrongCountry = nil
         correctCountry = nil
-        questionCountries = []
+        shuffledQuestionCountries = []
         historyArray = []
         resultText = nil
         correctAnswersHistory = 0

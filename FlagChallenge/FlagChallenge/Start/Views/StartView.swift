@@ -28,22 +28,7 @@ struct StartView: View {
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 20)
                     
-                    if challengeVM.correctAnswers != 0 || challengeVM.wrongAnswers != 0 {
-                        Text("Last game results:")
-                            .font(.title2)
-                            .foregroundStyle(Color.primaryColor)
-                            .multilineTextAlignment(.center)
-                        
-                        Text("Correct: \(challengeVM.correctAnswers)")
-                            .font(.headline)
-                            .foregroundStyle(Color.greenColor)
-                            .multilineTextAlignment(.center)
-                        
-                        Text("Wrong: \(challengeVM.wrongAnswers)")
-                            .font(.headline)
-                            .foregroundStyle(Color.destructiveColor)
-                            .multilineTextAlignment(.center)
-                    }
+                    scoreView()
                     
                     Spacer().frame(height: 100)
                     
@@ -67,7 +52,25 @@ private extension StartView {
         PrimaryButton(title: "Start Challenge", action: {
             router.navigate(to: .challenge)
         })
-
+    }
+    
+    @ViewBuilder func scoreView() -> some View {
+        if challengeVM.correctAnswers != 0 || challengeVM.wrongAnswers != 0 {
+            Text("Last game results:")
+                .font(.title2)
+                .foregroundStyle(Color.primaryColor)
+                .multilineTextAlignment(.center)
+            
+            Text("Correct: \(challengeVM.correctAnswers)")
+                .font(.headline)
+                .foregroundStyle(Color.greenColor)
+                .multilineTextAlignment(.center)
+            
+            Text("Wrong: \(challengeVM.wrongAnswers)")
+                .font(.headline)
+                .foregroundStyle(Color.destructiveColor)
+                .multilineTextAlignment(.center)
+        }
     }
 }
 
