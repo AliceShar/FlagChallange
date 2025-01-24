@@ -11,16 +11,14 @@ import Foundation
 final class ChallengeViewModel: ObservableObject {
     
     // Published properties
-    @Published private(set) var wrongCountry: CountryModel?
-    @Published private(set) var correctCountry: CountryModel?
     @Published private(set) var shuffledQuestionCountries: [CountryModel?] = []
-    @Published private(set) var result: [CountryModel?] = []
     @Published private(set) var resultText: String?
     @Published private(set) var disabledView: Bool = false
     
     @Published private(set) var correctAnswers: Int = 0
     @Published private(set) var wrongAnswers: Int = 0
     @Published private(set) var goBack: Bool = false
+    @Published private(set) var correctCountry: CountryModel?
     
     // Stored properties
     private let countriesManager: CountriesHelper
@@ -34,7 +32,6 @@ final class ChallengeViewModel: ObservableObject {
     
     // Public methods
     func clearAll() {
-        wrongCountry = nil
         correctCountry = nil
         shuffledQuestionCountries = []
         historyArray = []
@@ -80,9 +77,8 @@ final class ChallengeViewModel: ObservableObject {
         repeat {
             wrongCountryCandidate = countriesList.randomElement()
         } while wrongCountryCandidate == correctCountry
-        wrongCountry = wrongCountryCandidate
         
-        let questionCountries = [correctCountry, wrongCountry].compactMap { $0 }
+        let questionCountries = [correctCountry, wrongCountryCandidate].compactMap { $0 }
         shuffledQuestionCountries = questionCountries.shuffled()
     }
     
